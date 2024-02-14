@@ -383,81 +383,66 @@ As you can see; the number of constructor parameters can quickly get out of hand
 The sane alternative is to use the builder pattern. First of all we have our burger that we want to make
 
 ```php
-class Burger
-{
-    protected $size;
+public class Burger {
+    protected int size;
+    protected boolean cheese = false;
+    protected boolean pepperoni = false;
+    protected boolean lettuce = false;
+    protected boolean tomato = false;
 
-    protected $cheese = false;
-    protected $pepperoni = false;
-    protected $lettuce = false;
-    protected $tomato = false;
-
-    public function __construct(BurgerBuilder $builder)
-    {
-        $this->size = $builder->size;
-        $this->cheese = $builder->cheese;
-        $this->pepperoni = $builder->pepperoni;
-        $this->lettuce = $builder->lettuce;
-        $this->tomato = $builder->tomato;
+    public Burger(BurgerBuilder builder) {
+        this.size = builder.size;
+        this.cheese = builder.cheese;
+        this.pepperoni = builder.pepperoni;
+        this.lettuce = builder.lettuce;
+        this.tomato = builder.tomato;
     }
 }
-```
 
-And then we have the builder
+public class BurgerBuilder {
+    public int size;
+    public boolean cheese = false;
+    public boolean pepperoni = false;
+    public boolean lettuce = false;
+    public boolean tomato = false;
 
-```php
-class BurgerBuilder
-{
-    public $size;
-
-    public $cheese = false;
-    public $pepperoni = false;
-    public $lettuce = false;
-    public $tomato = false;
-
-    public function __construct(int $size)
-    {
-        $this->size = $size;
+    public BurgerBuilder(int size) {
+        this.size = size;
     }
 
-    public function addPepperoni()
-    {
-        $this->pepperoni = true;
-        return $this;
+    public BurgerBuilder addPepperoni() {
+        this.pepperoni = true;
+        return this;
     }
 
-    public function addLettuce()
-    {
-        $this->lettuce = true;
-        return $this;
+    public BurgerBuilder addLettuce() {
+        this.lettuce = true;
+        return this;
     }
 
-    public function addCheese()
-    {
-        $this->cheese = true;
-        return $this;
+    public BurgerBuilder addCheese() {
+        this.cheese = true;
+        return this;
     }
 
-    public function addTomato()
-    {
-        $this->tomato = true;
-        return $this;
+    public BurgerBuilder addTomato() {
+        this.tomato = true;
+        return this;
     }
 
-    public function build(): Burger
-    {
-        return new Burger($this);
+    public Burger build() {
+        return new Burger(this);
     }
 }
-```
-And then it can be used as:
 
-```php
-$burger = (new BurgerBuilder(14))
-                    ->addPepperoni()
-                    ->addLettuce()
-                    ->addTomato()
-                    ->build();
+// Usage example:
+Burger burger = new BurgerBuilder(14)
+                    .addPepperoni()
+                    .addLettuce()
+                    .addTomato()
+                    .build();
+
+
 ```
 
 **When to use?**
